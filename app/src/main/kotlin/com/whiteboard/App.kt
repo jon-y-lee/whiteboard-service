@@ -3,13 +3,21 @@
  */
 package com.whiteboard
 
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+
+@SpringBootApplication
 class App {
     val greeting: String
         get() {
             return "Hello World!"
         }
+
+    val hello: Int = 123
+
 }
 
-fun main() {
-    println(App().greeting)
+fun main(args: Array<String>) {
+    println(App().greeting + ' ' + App().hello)
+    SpringApplication.run(App::class.java, *args)
 }
