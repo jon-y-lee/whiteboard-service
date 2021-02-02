@@ -15,4 +15,3 @@ class WhiteboardController {
         println("Creating whiteboard:");
     }
 }
-

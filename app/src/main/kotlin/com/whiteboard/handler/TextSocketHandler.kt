@@ -1,15 +1,19 @@
-package com.whiteboard.configuration
+package com.whiteboard.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.whiteboard.domain.Message
+import com.whiteboard.service.WhiteboardService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
 
-
-class TextSocketHandler(private val objectMapper: ObjectMapper): TextWebSocketHandler() {
+@Component
+class TextSocketHandler(private val objectMapper: ObjectMapper,
+                        private val whiteboardService: WhiteboardService): TextWebSocketHandler() {
 
     @Throws(Exception::class)
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
@@ -22,6 +26,8 @@ class TextSocketHandler(private val objectMapper: ObjectMapper): TextWebSocketHa
         }
 
         println(message = "Handled New Text Message:" + deserializedMessage.payload)
+
+        whiteboardService.publishMessage(session, deserializedMessage)
     }
 
     @Throws(java.lang.Exception::class)
